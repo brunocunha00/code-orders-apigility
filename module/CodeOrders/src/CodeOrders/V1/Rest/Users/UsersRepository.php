@@ -55,4 +55,9 @@ class UsersRepository
         $this->tableGateway->update((array)$user,['id' =>(int) $id]);
         return  $this->findById($id);
     }
+
+    public function findByUsername($username)
+    {
+       return $this->tableGateway->select(['username'=>$username])->current();
+    }
 }

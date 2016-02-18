@@ -1,23 +1,24 @@
 <?php
-namespace CodeOrders\V1\Rest\Users;
+namespace CodeOrders\V1\Rest\Orders;
 
 use ZF\ApiProblem\ApiProblem;
 use ZF\Rest\AbstractResourceListener;
 
-class UsersResource extends AbstractResourceListener
+class OrdersResource extends AbstractResourceListener
 {
     /**
-     * @var UsersRepository
+     * @var OrdersRepository
      */
-    private $usersRepository;
+    private $ordersRepository;
 
     /**
-     * UsersRepositoryFactory constructor.
+     * OrdersResource constructor.
      */
-    public function __construct(UsersRepository $usersRepository)
+    public function __construct(OrdersRepository $ordersRepository)
     {
-        $this->usersRepository = $usersRepository;
+        $this->ordersRepository = $ordersRepository;
     }
+
     /**
      * Create a resource
      *
@@ -26,7 +27,7 @@ class UsersResource extends AbstractResourceListener
      */
     public function create($data)
     {
-        return $this->usersRepository->create($data);
+        return new ApiProblem(405, 'The POST method has not been defined');
     }
 
     /**
@@ -37,7 +38,7 @@ class UsersResource extends AbstractResourceListener
      */
     public function delete($id)
     {
-        return $this->usersRepository->delete($id);
+        return new ApiProblem(405, 'The DELETE method has not been defined for individual resources');
     }
 
     /**
@@ -59,7 +60,7 @@ class UsersResource extends AbstractResourceListener
      */
     public function fetch($id)
     {
-        return $this->usersRepository->findById($id);
+        return new ApiProblem(405, 'The GET method has not been defined for individual resources');
     }
 
     /**
@@ -70,13 +71,7 @@ class UsersResource extends AbstractResourceListener
      */
     public function fetchAll($params = array())
     {
-        $user = $this->usersRepository->findByUsername($this->getIdentity()->getRoleId());
-
-        if($user->getRole() != "admin")
-        {
-            return new ApiProblem(403, "The user has not access to this info.");
-        }
-        return $this->usersRepository->findAll();
+        return $this->ordersRepository->findAll();
     }
 
     /**
@@ -111,6 +106,6 @@ class UsersResource extends AbstractResourceListener
      */
     public function update($id, $data)
     {
-        return $this->usersRepository->update($data, $id);
+        return new ApiProblem(405, 'The PUT method has not been defined for individual resources');
     }
 }
