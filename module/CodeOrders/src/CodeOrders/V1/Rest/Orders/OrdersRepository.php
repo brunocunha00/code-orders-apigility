@@ -12,6 +12,7 @@ namespace CodeOrders\V1\Rest\Orders;
 use Zend\Db\TableGateway\AbstractTableGateway;
 use Zend\Paginator\Adapter\ArrayAdapter;
 use Zend\Stdlib\Hydrator\ClassMethods;
+use Zend\Stdlib\Hydrator\ObjectProperty;
 
 class OrdersRepository
 {
@@ -51,4 +52,20 @@ class OrdersRepository
         $ordersCollection = new OrdersCollection(new ArrayAdapter($data));
         return $ordersCollection;
     }
+
+    public function insert(array $data)
+    {
+        $this->tableGateway->insert($data);
+        $id = $this->tableGateway->getLastInsertValue();
+        return $id;
+    }
+
+    public function insertItem(array $data)
+    {
+        $this->orderItemTableGateway->insert($data);
+        $id = $this->orderItemTableGateway->getLastInsertValue();
+        return $id;
+    }
+
+
 }

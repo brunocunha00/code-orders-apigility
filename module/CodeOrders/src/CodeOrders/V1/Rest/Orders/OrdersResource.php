@@ -10,13 +10,18 @@ class OrdersResource extends AbstractResourceListener
      * @var OrdersRepository
      */
     private $ordersRepository;
+    /**
+     * @var OrdersService
+     */
+    private $ordersService;
 
     /**
      * OrdersResource constructor.
      */
-    public function __construct(OrdersRepository $ordersRepository)
+    public function __construct(OrdersRepository $ordersRepository, OrdersService $ordersService)
     {
         $this->ordersRepository = $ordersRepository;
+        $this->ordersService = $ordersService;
     }
 
     /**
@@ -27,7 +32,8 @@ class OrdersResource extends AbstractResourceListener
      */
     public function create($data)
     {
-        return new ApiProblem(405, 'The POST method has not been defined');
+
+        return $this->ordersService->insert($data);
     }
 
     /**
