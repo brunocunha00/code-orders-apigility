@@ -1,6 +1,7 @@
 <?php
 namespace CodeOrders\V1\Rest\Orders;
 
+use CodeOrders\V1\Rest\Users\UsersRepository;
 use ZF\ApiProblem\ApiProblem;
 use ZF\Rest\AbstractResourceListener;
 
@@ -14,14 +15,19 @@ class OrdersResource extends AbstractResourceListener
      * @var OrdersService
      */
     private $ordersService;
+    /**
+     * @var UsersRepository
+     */
+    private $usersRepository;
 
     /**
      * OrdersResource constructor.
      */
-    public function __construct(OrdersRepository $ordersRepository, OrdersService $ordersService)
+    public function __construct(OrdersRepository $ordersRepository, OrdersService $ordersService, UsersRepository $usersRepository)
     {
         $this->ordersRepository = $ordersRepository;
         $this->ordersService = $ordersService;
+        $this->usersRepository = $usersRepository;
     }
 
     /**
@@ -32,8 +38,16 @@ class OrdersResource extends AbstractResourceListener
      */
     public function create($data)
     {
+        if($this->usersRepository->getAuthenticated()->getRole() != "salesman")
+        {
+            return new ApiProblem('405', 'The user has not access to this info.');
+        }
 
-        return $this->ordersService->insert($data);
+        try {
+            return $this->ordersService->insert($data);
+        } catch (\Exception $e) {
+            return new ApiProblem('405', 'Error processing order');
+        }
     }
 
     /**
@@ -66,7 +80,7 @@ class OrdersResource extends AbstractResourceListener
      */
     public function fetch($id)
     {
-        return new ApiProblem(405, 'The GET method has not been defined for individual resources');
+        return $this->ordersRepository->findById($id);
     }
 
     /**
@@ -77,7 +91,14 @@ class OrdersResource extends AbstractResourceListener
      */
     public function fetchAll($params = array())
     {
-        return $this->ordersRepository->findAll();
+        if($this->usersRepository->getAuthenticated()->getRole() == "admin")
+        {
+            return $this->ordersRepository->findAll();
+        }
+
+        return $this->ordersRepository->findByUser($this->usersRepository->getAuthenticated()->getId());
+
+
     }
 
     /**
@@ -112,6 +133,6 @@ class OrdersResource extends AbstractResourceListener
      */
     public function update($id, $data)
     {
-        return new ApiProblem(405, 'The PUT method has not been defined for individual resources');
+        return $this->ordersRepository->updateStatus($id,$data);
     }
 }

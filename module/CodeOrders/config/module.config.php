@@ -554,6 +554,22 @@ return array(
                     'DELETE' => true,
                 ),
             ),
+            'CodeOrders\\V1\\Rest\\Orders\\Controller' => array(
+                'collection' => array(
+                    'GET' => true,
+                    'POST' => true,
+                    'PUT' => false,
+                    'PATCH' => false,
+                    'DELETE' => false,
+                ),
+                'entity' => array(
+                    'GET' => true,
+                    'POST' => false,
+                    'PUT' => true,
+                    'PATCH' => true,
+                    'DELETE' => true,
+                ),
+            ),
         ),
     ),
 );

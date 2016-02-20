@@ -30,19 +30,28 @@ class OrdersService
     {
         $hydrator = new ObjectProperty();
         $data = $hydrator->extract($data);
-
         $order = $data;
         unset($order['items']);
-
-        $orderId = $this->ordersRepository->insert($order);
-
         $items = $data['items'];
 
-        foreach ($items as $item) {
-            $item['order_id'] = $orderId;
-            $this->ordersRepository->insertItem($item);
+        $tableGateway = $this->ordersRepository->getTableGateway();
+
+        try {
+            $tableGateway->getAdapter()->getDriver()->getConnection()->beginTransaction();
+            $orderId = $this->ordersRepository->insert($order);
+
+            foreach ($items as $item) {
+                $item['order_id'] = $orderId;
+                $this->ordersRepository->insertItem($item);
+            }
+            $tableGateway->getAdapter()->getDriver()->getConnection()->commit();
+            return ['order_id' => $orderId];
+
+        } catch (\Exception $e) {
+            $tableGateway->getAdapter()->getDriver()->getConnection()->rollback();
+            throw new \Exception;
         }
 
-        return ['order_id' => $orderId];
+
     }
 }
