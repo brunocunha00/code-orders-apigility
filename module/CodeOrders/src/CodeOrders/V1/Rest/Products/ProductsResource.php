@@ -7,6 +7,20 @@ use ZF\Rest\AbstractResourceListener;
 class ProductsResource extends AbstractResourceListener
 {
     /**
+     * @var ProductsService
+     */
+    private $productsService;
+
+    /**
+     * ProductsResource constructor.
+     */
+    public function __construct(ProductsService $productsService)
+    {
+        $this->productsService = $productsService;
+    }
+
+
+    /**
      * Create a resource
      *
      * @param  mixed $data
@@ -14,7 +28,7 @@ class ProductsResource extends AbstractResourceListener
      */
     public function create($data)
     {
-        return new ApiProblem(405, 'The POST method has not been defined');
+        return $this->productsService->insert($data);
     }
 
     /**
@@ -47,7 +61,7 @@ class ProductsResource extends AbstractResourceListener
      */
     public function fetch($id)
     {
-        return new ApiProblem(405, 'The GET method has not been defined for individual resources');
+        return $this->productsService->findById($id);
     }
 
     /**
@@ -58,7 +72,7 @@ class ProductsResource extends AbstractResourceListener
      */
     public function fetchAll($params = array())
     {
-        return new ApiProblem(405, 'The GET method has not been defined for collections');
+        return $this->productsService->findAll();
     }
 
     /**
@@ -93,6 +107,6 @@ class ProductsResource extends AbstractResourceListener
      */
     public function update($id, $data)
     {
-        return new ApiProblem(405, 'The PUT method has not been defined for individual resources');
+        return $this->productsService->update($id, $data);
     }
 }
