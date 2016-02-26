@@ -258,7 +258,7 @@ return array(
                 'entity_identifier_name' => 'id',
                 'route_name' => 'code-orders.rest.clients',
                 'route_identifier_name' => 'clients_id',
-                'hydrator' => 'Zend\\Hydrator\\ArraySerializable',
+                'hydrator' => 'Zend\\Hydrator\\ClassMethods',
             ),
             'CodeOrders\\V1\\Rest\\Clients\\ClientsCollection' => array(
                 'entity_identifier_name' => 'id',
@@ -304,9 +304,10 @@ return array(
             'CodeOrders\\V1\\Rest\\Clients\\ClientsResource' => array(
                 'adapter_name' => 'DbAdapter',
                 'table_name' => 'clients',
-                'hydrator_name' => 'Zend\\Hydrator\\ArraySerializable',
+                'hydrator_name' => 'Zend\\Hydrator\\ClassMethods',
                 'controller_service_name' => 'CodeOrders\\V1\\Rest\\Clients\\Controller',
                 'entity_identifier_name' => 'id',
+                'table_service' => 'CodeOrders\\V1\\Rest\\Clients\\ClientsResource\\Table',
             ),
         ),
     ),
@@ -536,7 +537,9 @@ return array(
             'CodeOrders\\V1\\Rest\\Orders\\OrderItemTableGateway' => 'CodeOrders\\V1\\Rest\\Orders\\OrderItemTableGatewayFactory',
             'CodeOrders\\V1\\Rest\\Orders\\OrdersRepository' => 'CodeOrders\\V1\\Rest\\Orders\\OrdersRepositoryFactory',
             'CodeOrders\\V1\\Rest\\Orders\\OrdersService' => 'CodeOrders\\V1\\Rest\\Orders\\OrdersServiceFactory',
-
+            'CodeOrders\\V1\\Rest\\Clients\\ClientsRepository' => 'CodeOrders\\V1\\Rest\\Clients\\ClientsRepositoryFactory',
+            'CodeOrders\\V1\\Rest\\Clients\\ClientsService' => 'CodeOrders\\V1\\Rest\\Clients\\ClientsServiceFactory',
+            'CodeOrders\\V1\\Rest\\Clients\\ClientsResource' => 'CodeOrders\\V1\\Rest\\Clients\\ClientsResourceFactory',
         ),
     ),
     'zf-mvc-auth' => array(

@@ -12,7 +12,6 @@ namespace CodeOrders\V1\Rest\Users;
 use JsonSchema\Exception\ResourceNotFoundException;
 use Zend\Db\TableGateway\TableGatewayInterface;
 use Zend\Paginator\Adapter\DbTableGateway;
-use ZF\ApiProblem\Exception\InvalidArgumentException;
 use ZF\MvcAuth\Identity\AuthenticatedIdentity;
 
 class UsersRepository
