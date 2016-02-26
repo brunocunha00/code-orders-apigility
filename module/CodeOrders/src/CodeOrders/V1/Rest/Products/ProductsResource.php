@@ -1,6 +1,7 @@
 <?php
 namespace CodeOrders\V1\Rest\Products;
 
+use CodeOrders\V1\Rest\Users\UsersRepository;
 use ZF\ApiProblem\ApiProblem;
 use ZF\Rest\AbstractResourceListener;
 
@@ -10,13 +11,18 @@ class ProductsResource extends AbstractResourceListener
      * @var ProductsService
      */
     private $productsService;
+    /**
+     * @var UsersRepository
+     */
+    private $usersRepository;
 
     /**
      * ProductsResource constructor.
      */
-    public function __construct(ProductsService $productsService)
+    public function __construct(ProductsService $productsService, UsersRepository $usersRepository)
     {
         $this->productsService = $productsService;
+        $this->usersRepository = $usersRepository;
     }
 
 
@@ -28,6 +34,10 @@ class ProductsResource extends AbstractResourceListener
      */
     public function create($data)
     {
+        if($this->usersRepository->getAuthenticated()->getRole() != "admin")
+        {
+            return new ApiProblem('405', 'The user has not access to this info.');
+        }
         return $this->productsService->insert($data);
     }
 
@@ -107,6 +117,10 @@ class ProductsResource extends AbstractResourceListener
      */
     public function update($id, $data)
     {
+        if($this->usersRepository->getAuthenticated()->getRole() != "admin")
+        {
+            return new ApiProblem('405', 'The user has not access to this info.');
+        }
         return $this->productsService->update($id, $data);
     }
 }

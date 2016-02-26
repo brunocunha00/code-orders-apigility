@@ -23,6 +23,8 @@ class ClientsResourceFactory implements FactoryInterface
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        return new ClientsResource($serviceLocator->get("CodeOrders\\V1\\Rest\\Clients\\ClientsService"));
+        return new ClientsResource(
+            $serviceLocator->get("CodeOrders\\V1\\Rest\\Clients\\ClientsService"),
+            $serviceLocator->get("CodeOrders\\V1\\Rest\\Users\\UsersRepository"));
     }
 }

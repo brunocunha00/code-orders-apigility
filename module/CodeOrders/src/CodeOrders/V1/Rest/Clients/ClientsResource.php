@@ -9,6 +9,8 @@
 namespace CodeOrders\V1\Rest\Clients;
 
 
+use CodeOrders\V1\Rest\Users\UsersRepository;
+use CodeOrders\V1\Rest\Users\UsersResource;
 use ZF\ApiProblem\ApiProblem;
 use ZF\Rest\AbstractResourceListener;
 
@@ -18,13 +20,18 @@ class ClientsResource extends AbstractResourceListener
      * @var ClientsService
      */
     private $clientsService;
+    /**
+     * @var UsersRepository
+     */
+    private $usersRepository;
 
     /**
      * ClientsResource constructor.
      */
-    public function __construct(ClientsService $clientsService)
+    public function __construct(ClientsService $clientsService, UsersRepository $usersRepository)
     {
         $this->clientsService = $clientsService;
+        $this->usersRepository = $usersRepository;
     }
 
     /**
@@ -35,6 +42,10 @@ class ClientsResource extends AbstractResourceListener
      */
     public function create($data)
     {
+        if($this->usersRepository->getAuthenticated()->getRole() != "admin" )
+        {
+            return new ApiProblem('405', 'The user has not access to this info.');
+        }
         return $this->clientsService->insert($data);
     }
 
@@ -114,6 +125,10 @@ class ClientsResource extends AbstractResourceListener
      */
     public function update($id, $data)
     {
+        if($this->usersRepository->getAuthenticated()->getRole() != "admin")
+        {
+            return new ApiProblem('405', 'The user has not access to this info.');
+        }
         return $this->clientsService->update($id, $data);
     }
 }
