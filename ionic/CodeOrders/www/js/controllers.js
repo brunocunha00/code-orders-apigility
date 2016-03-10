@@ -16,3 +16,23 @@ angular.module('starter.controllers', [])
 
         }
     ])
+    .controller('OrderController', ['$scope', '$http', '$state',
+        function($scope, $http, $state){
+            $scope.getOrders = function (){
+                $http.get('http://localhost:8888/orders').then(
+                    function(data){
+                        $scope.orders = data.data._embedded.orders;
+                        console.log($scope.orders);
+                    }
+                )
+            };
+
+            $scope.doRefresh = function(){
+                $scope.getOrders();
+                $scope.$broadcast('scroll.refreshComplete');
+            };
+
+            $scope.getOrders();
+
+        }
+    ])

@@ -23,7 +23,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'angular-oauth2'])
         });
     })
 
-    .config(function($stateProvider, $urlRouterProvider, OAuthProvider){
+    .config(function($stateProvider, $urlRouterProvider, OAuthProvider, OAuthTokenProvider){
 
         OAuthProvider.configure({
             baseUrl: 'http://localhost:8888',
@@ -31,6 +31,13 @@ angular.module('starter', ['ionic', 'starter.controllers', 'angular-oauth2'])
             clientSecret: '123',
             grantPath: '/oauth',
             revokePath: '/oauth'
+        });
+
+        OAuthTokenProvider.configure({
+            name: 'token',
+            options: {
+                secure: false
+            }
         });
 
         $stateProvider
@@ -43,7 +50,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'angular-oauth2'])
                 url: '/orders',
                 views: {
                     'orders-tab': {
-                        templateUrl: 'templates/orders.html'
+                        templateUrl: 'templates/orders.html',
+                        controller: 'OrderController'
                     }
                 }
             })

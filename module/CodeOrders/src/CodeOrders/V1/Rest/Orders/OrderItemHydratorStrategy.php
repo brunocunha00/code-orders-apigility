@@ -37,6 +37,7 @@ class OrderItemHydratorStrategy implements StrategyInterface
      */
     public function extract($items)
     {
+        $data = [];
         foreach ($items as $item) {
             $data[] = $this->hydrator->extract($item);
         }
