@@ -32,6 +32,10 @@ angular.module('starter.controllers', [])
                 $scope.$broadcast('scroll.refreshComplete');
             };
 
+            $scope.onOrderDelete = function(order){
+                $http.delete('http://localhost:8888/orders/'+ order.id);
+                $scope.getOrders();
+            };
             $scope.getOrders();
 
         }

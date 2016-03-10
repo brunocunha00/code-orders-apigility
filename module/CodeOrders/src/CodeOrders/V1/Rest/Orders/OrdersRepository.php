@@ -110,4 +110,15 @@ class OrdersRepository
         $this->tableGateway->update(['status' => (int) $status], ['id' => (int)$id]);
         return $this->findById($id);
     }
+
+    public function delete($id)
+    {
+        $items = $this->orderItemTableGateway->select(['order_id' => (int) $id]);
+
+        foreach ($items as $item) {
+            $this->orderItemTableGateway->delete(['id' => $item->getId()]);
+        }
+
+        return $this->tableGateway->delete(['id' => (int) $id]);
+    }
 }
