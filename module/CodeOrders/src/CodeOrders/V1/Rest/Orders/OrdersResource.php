@@ -58,8 +58,7 @@ class OrdersResource extends AbstractResourceListener
      */
     public function delete($id)
     {
-        $this->ordersRepository->delete($id);
-        return ['success' => true];
+        return (boolean) $this->ordersRepository->delete($id);
     }
 
     /**
